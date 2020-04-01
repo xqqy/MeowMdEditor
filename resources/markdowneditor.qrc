@@ -1,0 +1,17 @@
+<RCC>
+    <qresource prefix="/">
+        <file>default.zh.md</file>
+        <file>index.html</file>
+        <file>3rdparty/markdown.css</file>
+        <file>3rdparty/marked.js</file>
+        <file>3rdparty/breeze-icon/document-new.svg</file>
+        <file>3rdparty/breeze-icon/document-open.svg</file>
+        <file>3rdparty/breeze-icon/document-save-as.svg</file>
+        <file>3rdparty/breeze-icon/document-save.svg</file>
+        <file>3rdparty/breeze-icon/edit-find.svg</file>
+        <file>3rdparty/breeze-icon/gtk-select-font.svg</file>
+        <file>3rdparty/breeze-icon/help-about.svg</file>
+        <file>3rdparty/breeze-icon/application-exit.svg</file>
+        <file>default.md</file>
+    </qresource>
+</RCC>
