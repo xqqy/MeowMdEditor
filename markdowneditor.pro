@@ -35,6 +35,7 @@ TRANSLATIONS += app.en_US.ts
 
 DESTDIR     = deployment
 
+RC_ICONS = logo.ico
 
 
 # copies the given files to the destination directory

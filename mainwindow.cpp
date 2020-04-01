@@ -73,6 +73,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    this->setWindowIcon(QIcon(":/3rdparty/breeze-icon/default.png"));
     //编辑器用系统字体，禁止webview的菜单
     ui->editor->setFont(QFontDatabase::systemFont(QFontDatabase::FixedFont));
     ui->preview->setContextMenuPolicy(Qt::NoContextMenu);
@@ -120,7 +121,7 @@ MainWindow::MainWindow(QWidget *parent) :
     defaultTextFile.open(QIODevice::ReadOnly);
     //设置editor的文本为
     ui->editor->setPlainText(defaultTextFile.readAll());
-
+    this->setWindowTitle("MarkDown Editor");
 
 }
 
@@ -139,7 +140,9 @@ void MainWindow::openFile(const QString &path)
         return;
     }
     m_filePath = path;
+    m_filePath=f.fileName();
     ui->editor->setPlainText(f.readAll());
+    this->setWindowTitle("MarkDown Editor - "+m_filePath);
 }
 
 bool MainWindow::isModified() const
@@ -157,6 +160,8 @@ void MainWindow::onFileNew()
     }
 
     m_filePath.clear();
+    m_filePath.clear();
+    this->setWindowTitle("MarkDown Editor");
     ui->editor->setPlainText(tr("## New document"));
     ui->editor->document()->setModified(false);
 }
@@ -171,7 +176,7 @@ void MainWindow::onFileOpen()
     }
 
     QString path = QFileDialog::getOpenFileName(this,
-        tr("Open File"), "", tr("MarkDown File (*.md *.markdown);;TxT File (*.txt);;All files(*.*)"));
+        tr("Open File"), "", "MarkDown File (*.md *.markdown);;TxT File (*.txt);;All files(*.*)");
     if (path.isEmpty())
         return;
 
@@ -186,6 +191,7 @@ void MainWindow::onFileSave()
     }
 
     QFile f(m_filePath);
+    m_filePath=f.fileName();
     if (!f.open(QIODevice::WriteOnly | QIODevice::Text))  {
         QMessageBox::warning(this, windowTitle(),
                              tr("Could not write to file %1: %2").arg(
@@ -194,6 +200,10 @@ void MainWindow::onFileSave()
     }
     QTextStream str(&f);
     str << ui->editor->toPlainText();
+
+    //保存完成后去除*
+    this->setWindowTitle("MarkDown Editor - "+m_filePath);
+
 
     ui->editor->document()->setModified(false);
 }
@@ -254,7 +264,7 @@ void MainWindow::Findsome()
 {//查找
     bool isOK;
     extern QString search;
-    search=QInputDialog::getText(NULL, "Search","Search what?",QLineEdit::Normal,search,&isOK);
+    search=QInputDialog::getText(NULL, tr("Search"),tr("Search what?"),QLineEdit::Normal,search,&isOK);
     if(isOK){
         if(!ui->editor->find(search)){
             if(!ui->editor->find(search,QTextDocument::FindBackward)){
@@ -269,7 +279,7 @@ void MainWindow::Findsome()
 
 void MainWindow::on_actionAbout_triggered()
 {//关于
-    QMessageBox::information(this,tr("About"),tr("Powered by XQQY Meow～Ver0.2"));
+    QMessageBox::information(this,tr("About"),tr("Powered by XQQY Meow～Ver0.3"));
 }
 
 void MainWindow::on_actionWC_triggered()
@@ -312,4 +322,10 @@ void MainWindow::on_actionHow_triggered()
     else
         fname=":/default.md";
     openFile(fname);
+}
+
+void MainWindow::on_editor_textChanged()
+{//给窗口标题加个*
+    if(!this->windowTitle().endsWith("*"))
+        this->setWindowTitle(this->windowTitle()+"*");
 }

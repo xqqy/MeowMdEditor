@@ -131,7 +131,7 @@
     <message>
         <location filename="mainwindow.ui" line="227"/>
         <source>count how much word </source>
-        <translation>统计都有多少字</translation>
+        <translation>统计都有多少字 </translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="236"/>
@@ -197,7 +197,7 @@
         <translation>Ctrl+F</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="272"/>
+        <location filename="mainwindow.cpp" line="281"/>
         <source>About</source>
         <translation>关于</translation>
     </message>
@@ -207,52 +207,55 @@
         <translation>无法打开文件%1：%2</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="154"/>
+        <location filename="mainwindow.cpp" line="156"/>
         <source>You have unsaved changes. Do you want to create a new document anyway?</source>
         <translation>你还有未保存的更改，确认新建文件吗？</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="160"/>
+        <location filename="mainwindow.cpp" line="164"/>
         <source>## New document</source>
         <translation>## 新文档</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="168"/>
+        <location filename="mainwindow.cpp" line="172"/>
         <source>You have unsaved changes. Do you want to open a new document anyway?</source>
         <translation>你还有未保存的更改，确认打开文件吗？</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="174"/>
+        <location filename="mainwindow.cpp" line="178"/>
         <source>Open File</source>
         <translation>打开文件</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="174"/>
-        <source>MarkDown File (*.md *.markdown);;TxT File (*.txt);;All files(*.*)</source>
-        <translation>Markdown文件（*.md *.markdown)</translation>
+        <location filename="mainwindow.cpp" line="281"/>
+        <source>Powered by XQQY Meow～Ver0.3</source>
+        <translation>由XQQY小喵喵开发喵～Ver0.3</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="224"/>
+        <source>MarkDown File (*.md *.markdown);;TxT File (*.txt);;All files(*.*)</source>
+        <translation type="vanished">Markdown文件（*.md *.markdown)</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="233"/>
         <source>MarkDown File (*.md *.markdown)</source>
         <translation>Markdown文件(*.md，*.markdown)</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="272"/>
         <source>Powered by XQQY Meow～Ver0.2</source>
-        <translation>由XQQY小喵喵开发喵～Ver0.2</translation>
+        <translation type="vanished">由XQQY小喵喵开发喵～Ver0.2</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="277"/>
+        <location filename="mainwindow.cpp" line="286"/>
         <source>word count</source>
         <translation>字数统计</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="277"/>
+        <location filename="mainwindow.cpp" line="286"/>
         <source>Total word:%1</source>
         <translation>总共有%1个字</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="304"/>
+        <location filename="mainwindow.cpp" line="313"/>
         <source>You have unsaved changes. Do you want to open a help document anyway?</source>
         <translation>你还有未保存的更改，确认帮助文件吗？</translation>
     </message>
@@ -265,22 +268,22 @@
         <translation type="vanished">Markdown文件(*.md)</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="191"/>
+        <location filename="mainwindow.cpp" line="196"/>
         <source>Could not write to file %1: %2</source>
         <translation>无法写入文件 %1：%2</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="214"/>
+        <location filename="mainwindow.cpp" line="223"/>
         <source>File Drops</source>
         <translation>文件拖放</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="214"/>
+        <location filename="mainwindow.cpp" line="223"/>
         <source>Droping more than 1 file is not allowed</source>
         <translation>不能拖放超过一个文件</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="224"/>
+        <location filename="mainwindow.cpp" line="233"/>
         <source>Save MarkDown File</source>
         <translation>保存Markdown文件</translation>
     </message>
@@ -289,17 +292,23 @@
         <translation type="vanished">Markdown文件(*.md，*.markdown)</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="236"/>
+        <location filename="mainwindow.cpp" line="245"/>
         <source>You have unsaved changes. Do you want to exit anyway?</source>
         <translation>你还有未保存的更改，确认离开吗？</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="261"/>
+        <location filename="mainwindow.cpp" line="266"/>
+        <location filename="mainwindow.cpp" line="270"/>
         <source>Search</source>
         <translation>搜索</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="262"/>
+        <location filename="mainwindow.cpp" line="266"/>
+        <source>Search what?</source>
+        <translation>搜什么？</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="271"/>
         <source>Can not found %1</source>
         <translation>找不到%1</translation>
     </message>

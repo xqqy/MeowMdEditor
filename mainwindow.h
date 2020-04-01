@@ -93,6 +93,8 @@ private slots:
 
     void on_actionHow_triggered();
 
+    void on_editor_textChanged();
+
 private:
     bool isModified() const;
     //重写的一些event
