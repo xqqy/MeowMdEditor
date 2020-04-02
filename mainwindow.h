@@ -105,7 +105,7 @@ private:
     Ui::MainWindow *ui;
     QString m_filePath;
     Document m_content;
-    QString search;
+    QString search="";
 };
 
 #endif // MAINWINDOW_H

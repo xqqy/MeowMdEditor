@@ -3,11 +3,13 @@ TEMPLATE = app
 QT += webenginewidgets webchannel
 
 HEADERS += \
+    highlight/myhighlighter.h \
     mainwindow.h \
     previewpage.h \
     document.h
 
 SOURCES = \
+    highlight/myhighlighter.cpp \
     main.cpp \
     mainwindow.cpp \
     previewpage.cpp \

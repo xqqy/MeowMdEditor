@@ -51,6 +51,7 @@
 #include "mainwindow.h"
 #include "previewpage.h"
 #include "ui_mainwindow.h"
+#include"highlight/myhighlighter.h"
 
 #include <QFile>
 #include <QFileDialog>
@@ -65,7 +66,6 @@
 #include<QInputDialog>
 #include<QMimeData>
 
-QString search="";//搜索字符串
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -79,9 +79,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->preview->setContextMenuPolicy(Qt::NoContextMenu);
     //允许拖放
     setAcceptDrops(true);
+    //喵高亮系统
+    MyHighLighter *high = new MyHighLighter(ui->editor->document());
 
-
-
+    //webengine的页面
     PreviewPage *page = new PreviewPage(this);
     ui->preview->setPage(page);
 
@@ -263,7 +264,6 @@ void MainWindow::ChangeFont()
 void MainWindow::Findsome()
 {//查找
     bool isOK;
-    extern QString search;
     search=QInputDialog::getText(NULL, tr("Search"),tr("Search what?"),QLineEdit::Normal,search,&isOK);
     if(isOK){
         if(!ui->editor->find(search)){
@@ -279,7 +279,7 @@ void MainWindow::Findsome()
 
 void MainWindow::on_actionAbout_triggered()
 {//关于
-    QMessageBox::information(this,tr("About"),tr("Powered by XQQY Meow～Ver0.3"));
+    QMessageBox::information(this,tr("About"),tr("Powered by XQQY Meow～Ver0.4"));
 }
 
 void MainWindow::on_actionWC_triggered()
