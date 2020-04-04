@@ -68,7 +68,7 @@
 
 
 
-MainWindow::MainWindow(QWidget *parent) :
+MainWindow::MainWindow(QWidget *parent,const QString &path) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
@@ -86,7 +86,7 @@ MainWindow::MainWindow(QWidget *parent) :
     PreviewPage *page = new PreviewPage(this);
     ui->preview->setPage(page);
 
-    //如果接收到改变内容的信号，就把新内容发送给m——content，一个继承自Qobject的document类
+    //如果接收到改变内容的信号，就把新内容发送给m_content，一个继承自Qobject的document类
     connect(ui->editor, &QPlainTextEdit::textChanged,
             [this]() { m_content.setText(ui->editor->toPlainText()); });
 
@@ -114,15 +114,18 @@ MainWindow::MainWindow(QWidget *parent) :
     QLocale loc;
     QString fname;
     //默认打开defalut.md
-    if(loc.bcp47Name()=="zh")
-        fname=":/default.zh.md";
-    else
-        fname=":/default.md";
-    QFile defaultTextFile(fname);
-    defaultTextFile.open(QIODevice::ReadOnly);
-    //设置editor的文本为
-    ui->editor->setPlainText(defaultTextFile.readAll());
-    this->setWindowTitle("MarkDown Editor");
+    if(path!=nullptr)
+        openFile(path);
+    else if(loc.bcp47Name()=="zh"){
+        openFile(":/default.zh.md");
+        this->setWindowTitle("MarkDown Editor");
+        m_filePath.clear();
+    }
+    else{
+        openFile(":/default.md");
+        this->setWindowTitle("MarkDown Editor");
+        m_filePath.clear();
+    }
 
 }
 
@@ -131,8 +134,8 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::openFile(const QString &path)
-{//打开文件
+void MainWindow::openFile(const QString &path,const bool isForceCodec)
+{//打开文件进程
     QFile f(path);
     if (!f.open(QIODevice::ReadOnly)) {
         QMessageBox::warning(this, windowTitle(),
@@ -141,10 +144,43 @@ void MainWindow::openFile(const QString &path)
         return;
     }
     m_filePath = path;
-    m_filePath=f.fileName();
-    ui->editor->setPlainText(f.readAll());
+
+    //要先把数据取出来，用tried进行存储
+    QByteArray fReadAll;
+    QString tried="";
+    bool flag=false;
+    fReadAll=f.readAll();
+    //自动获取字节编码，很不稳定
+    QTextCodec::ConverterState status;
+
+    tried=m_codec->toUnicode(fReadAll.constData(),fReadAll.size(),&status);
+    if(status.invalidChars>0 && !isForceCodec){//如果UTF-8不OK
+        m_codec=m_codec->codecForName("GB18030");//排除奇怪的ISO-8859-1
+        foreach (QByteArray i, QTextCodec::availableCodecs()) {//先试试
+           QTextCodec::ConverterState statu;
+           m_codec=m_codec->codecForName(i);
+           tried=m_codec->toUnicode(fReadAll.constData(),fReadAll.size(),&statu);
+           qDebug()<<i<<statu.invalidChars<<tried;
+           if(statu.invalidChars==0){
+               flag=true;
+               break;
+           }
+        }
+    }else{
+        flag=true;
+    }
+    if(!flag){
+        QMessageBox::warning(this, windowTitle(),
+                             tr("File %1's Codec Detect failed, try to set another Codec on edit menu").arg(
+                                 QDir::toNativeSeparators(path)));
+        m_codec=m_codec->codecForName("UTF-8");//实在不行，就还回到UTF-8
+        tried=m_codec->toUnicode(fReadAll.constData(),fReadAll.size(),&status);
+    }
+    ui->editor->setPlainText(tried);
+    status.invalidChars=-1;
     this->setWindowTitle("MarkDown Editor - "+m_filePath);
 }
+
 
 bool MainWindow::isModified() const
 {//检查是否更改过
@@ -161,14 +197,14 @@ void MainWindow::onFileNew()
     }
 
     m_filePath.clear();
-    m_filePath.clear();
+    m_codec->codecForName("UTF-8");//默认以UTF-8新建
     this->setWindowTitle("MarkDown Editor");
     ui->editor->setPlainText(tr("## New document"));
     ui->editor->document()->setModified(false);
 }
 
 void MainWindow::onFileOpen()
-{//打开文件
+{//打开文件对话框
     if (isModified()) {
         QMessageBox::StandardButton button = QMessageBox::question(this, windowTitle(),
                              tr("You have unsaved changes. Do you want to open a new document anyway?"));
@@ -180,7 +216,7 @@ void MainWindow::onFileOpen()
         tr("Open File"), "", "MarkDown File (*.md *.markdown);;TxT File (*.txt);;All files(*.*)");
     if (path.isEmpty())
         return;
-
+    m_codec=m_codec->codecForName("UTF-8");
     openFile(path);
 }
 
@@ -200,6 +236,8 @@ void MainWindow::onFileSave()
         return;
     }
     QTextStream str(&f);
+    if(m_codec!=nullptr)
+        str.setCodec(m_codec);
     str << ui->editor->toPlainText();
 
     //保存完成后去除*
@@ -213,6 +251,7 @@ void MainWindow::onFileSave()
 //当用户拖动文件到窗口部件上时候，就会触发dragEnterEvent事件
 void MainWindow::dragEnterEvent(QDragEnterEvent *event)
 {
+    qDebug()<<event->mimeData()->formats()<<"size"<<event->mimeData()->formats().size();
     if (event->mimeData()->hasFormat("text/plain"))
         event->acceptProposedAction();
 }
@@ -223,9 +262,15 @@ void MainWindow::dropEvent(QDropEvent *event)
     qDebug()<<"drop file:"<<event->mimeData()->urls();
     if(event->mimeData()->urls().size()>1)
         QMessageBox::warning(this, tr("File Drops"),tr("Droping more than 1 file is not allowed"));
-    else
+    else{
+        if (isModified()) {
+            QMessageBox::StandardButton button = QMessageBox::question(this, windowTitle(),
+                                 tr("You have unsaved changes. Do you want to open a new document anyway?"));
+            if (button != QMessageBox::Yes)
+                return;
+        }
         openFile(event->mimeData()->urls()[0].toLocalFile());
-
+    }
 }
 
 
@@ -273,13 +318,15 @@ void MainWindow::Findsome()
             }else{
                 ui->preview->findText(search);
             }
+        }else{
+            ui->preview->findText(search);
         }
     }
 }
 
 void MainWindow::on_actionAbout_triggered()
 {//关于
-    QMessageBox::information(this,tr("About"),tr("Powered by XQQY Meow～Ver0.4"));
+    QMessageBox::information(this,tr("About"),tr("Powered by XQQY Meow～Ver0.5"));
 }
 
 void MainWindow::on_actionWC_triggered()
@@ -328,4 +375,52 @@ void MainWindow::on_editor_textChanged()
 {//给窗口标题加个*
     if(!this->windowTitle().endsWith("*"))
         this->setWindowTitle(this->windowTitle()+"*");
+}
+
+void MainWindow::on_actionUTF_8_triggered()
+{//使用UTF-8编码
+    if (isModified()) {
+        QMessageBox::StandardButton button = QMessageBox::question(this, windowTitle(),
+                             tr("You have unsaved changes. Do you want to open a help document anyway?"));
+        if (button != QMessageBox::Yes)
+            return;
+    }
+    m_codec=m_codec->codecForName("UTF-8");
+    openFile(m_filePath,true);
+
+}
+
+void MainWindow::on_actionGBK_triggered()
+{//使用GBK编码
+    if (isModified()) {
+        QMessageBox::StandardButton button = QMessageBox::question(this, windowTitle(),
+                             tr("You have unsaved changes. Do you want to open a help document anyway?"));
+        if (button != QMessageBox::Yes)
+            return;
+    }
+    m_codec=m_codec->codecForName("GB18030");
+    openFile(m_filePath,true);
+}
+
+void MainWindow::on_actionCodecOthers_triggered()
+{
+    //使用其他编码
+    if (isModified()) {
+        QMessageBox::StandardButton button = QMessageBox::question(this, windowTitle(),
+                             tr("You have unsaved changes. Do you want to open a help document anyway?"));
+        if (button != QMessageBox::Yes)
+            return;
+    }
+        bool isOK;
+        QString codec=QInputDialog::getText(NULL, tr("Codec"),tr("Enter a Codec name"),QLineEdit::Normal,search,&isOK);
+        if(isOK){
+            m_codec=m_codec->codecForName(codec.toUtf8());
+            openFile(m_filePath,true);
+        }
+}
+
+void MainWindow::on_actionCodecAuto_triggered()
+{
+    m_codec=m_codec->codecForName("UTF-8");
+    openFile(m_filePath,false);
 }

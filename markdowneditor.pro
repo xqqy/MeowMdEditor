@@ -2,6 +2,9 @@ TEMPLATE = app
 
 QT += webenginewidgets webchannel
 
+# No need of qml
+QT -= positioning qml
+
 HEADERS += \
     highlight/myhighlighter.h \
     mainwindow.h \

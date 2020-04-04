@@ -76,11 +76,13 @@ int main(int argc, char *argv[])
         qApp->installTranslator(translator);
         qApp->installTranslator(translator2);
     }
+    MainWindow *window;
+    if(argc>1)
+        window = new MainWindow(nullptr,argv[1]);
+    else
+        window = new MainWindow();
 
-
-
-    MainWindow window;
-    window.show();
+    window->show();
 
     return a.exec();
 }

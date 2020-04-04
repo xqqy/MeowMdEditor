@@ -56,6 +56,7 @@
 
 #include <QMainWindow>
 #include <QString>
+#include<QTextCodec>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -68,10 +69,10 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = nullptr);
+    explicit MainWindow(QWidget *parent = nullptr,const QString &path=nullptr);
     ~MainWindow();
 
-    void openFile(const QString &path);
+    void openFile(const QString &path,const bool isForceCodec=false);
 
 private slots:
     void onFileNew();
@@ -88,12 +89,14 @@ private slots:
 
     void on_actionPreview_toggled(bool arg1);
     void on_actionView_mode_toggled(bool arg1);
-
     void on_actionExit_triggered();
-
     void on_actionHow_triggered();
-
     void on_editor_textChanged();
+    void on_actionUTF_8_triggered();
+    void on_actionGBK_triggered();
+    void on_actionCodecOthers_triggered();
+
+    void on_actionCodecAuto_triggered();
 
 private:
     bool isModified() const;
@@ -101,8 +104,10 @@ private:
     void closeEvent(QCloseEvent *event);
     void dragEnterEvent(QDragEnterEvent *event);
     void dropEvent(QDropEvent *event);
+    QString GetCorrectUnicode(const QByteArray &ba);
 
     Ui::MainWindow *ui;
+    QTextCodec *m_codec=QTextCodec::codecForName("UTF-8");
     QString m_filePath;
     Document m_content;
     QString search="";

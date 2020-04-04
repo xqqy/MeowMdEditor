@@ -19,6 +19,7 @@
     function(channel) {
       var content = channel.objects.content;
       updateText(content.text);
+      //当content的textChanged信号被发射的时候，调用updateText方法
       content.textChanged.connect(updateText);
     }
   );

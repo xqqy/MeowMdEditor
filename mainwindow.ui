@@ -83,12 +83,23 @@
     <property name="title">
      <string>&amp;Edit</string>
     </property>
+    <widget class="QMenu" name="menuSet_Codec">
+     <property name="title">
+      <string>Open with Codec</string>
+     </property>
+     <addaction name="actionCodecAuto"/>
+     <addaction name="actionUTF_8"/>
+     <addaction name="actionGBK"/>
+     <addaction name="actionCodecOthers"/>
+    </widget>
     <addaction name="actionFont"/>
     <addaction name="actionFind"/>
     <addaction name="actionWC"/>
     <addaction name="separator"/>
     <addaction name="actionPreview"/>
     <addaction name="actionView_mode"/>
+    <addaction name="separator"/>
+    <addaction name="menuSet_Codec"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -290,6 +301,29 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+M</string>
+   </property>
+  </action>
+  <action name="actionCodecAuto">
+   <property name="text">
+    <string>&amp;Auto Detecet Codec</string>
+   </property>
+  </action>
+  <action name="actionUTF_8">
+   <property name="text">
+    <string>UTF-8</string>
+   </property>
+  </action>
+  <action name="actionGBK">
+   <property name="text">
+    <string>GBK(GB 18310)</string>
+   </property>
+  </action>
+  <action name="actionCodecOthers">
+   <property name="text">
+    <string>&amp;Others...</string>
+   </property>
+   <property name="toolTip">
+    <string>Type a Codec </string>
    </property>
   </action>
  </widget>
