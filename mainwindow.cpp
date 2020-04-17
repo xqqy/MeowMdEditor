@@ -82,6 +82,7 @@ MainWindow::MainWindow(QWidget *parent,const QString &path) :
     //喵高亮系统
     MyHighLighter *high = new MyHighLighter(ui->editor->document());
 
+
     //webengine的页面
     PreviewPage *page = new PreviewPage(this);
     ui->preview->setPage(page);
@@ -111,9 +112,11 @@ MainWindow::MainWindow(QWidget *parent,const QString &path) :
     connect(ui->editor->document(), &QTextDocument::modificationChanged,
             ui->actionSave, &QAction::setEnabled);
 
+    //设置statusBar
+    ui->statusBar->addPermanentWidget(&l_codec);
+
+    //检查本地化打开defalut.md或defalut.zh.md
     QLocale loc;
-    QString fname;
-    //默认打开defalut.md
     if(path!=nullptr)
         openFile(path);
     else if(loc.bcp47Name()=="zh"){
@@ -179,6 +182,7 @@ void MainWindow::openFile(const QString &path,const bool isForceCodec)
     ui->editor->setPlainText(tried);
     status.invalidChars=-1;
     this->setWindowTitle("MarkDown Editor - "+m_filePath);
+    l_codec.setText(tr("File codec:")+m_codec->name());
 }
 
 
@@ -242,37 +246,10 @@ void MainWindow::onFileSave()
 
     //保存完成后去除*
     this->setWindowTitle("MarkDown Editor - "+m_filePath);
-
-
+    //更新文件
+    l_codec.setText(tr("File codec:")+m_codec->name());
     ui->editor->document()->setModified(false);
 }
-
-
-//当用户拖动文件到窗口部件上时候，就会触发dragEnterEvent事件
-void MainWindow::dragEnterEvent(QDragEnterEvent *event)
-{
-    qDebug()<<event->mimeData()->formats()<<"size"<<event->mimeData()->formats().size();
-    if (event->mimeData()->hasFormat("text/plain"))
-        event->acceptProposedAction();
-}
-
-//当用户放下这个文件后，就会触发dropEvent事件
-void MainWindow::dropEvent(QDropEvent *event)
-{
-    qDebug()<<"drop file:"<<event->mimeData()->urls();
-    if(event->mimeData()->urls().size()>1)
-        QMessageBox::warning(this, tr("File Drops"),tr("Droping more than 1 file is not allowed"));
-    else{
-        if (isModified()) {
-            QMessageBox::StandardButton button = QMessageBox::question(this, windowTitle(),
-                                 tr("You have unsaved changes. Do you want to open a new document anyway?"));
-            if (button != QMessageBox::Yes)
-                return;
-        }
-        openFile(event->mimeData()->urls()[0].toLocalFile());
-    }
-}
-
 
 void MainWindow::onFileSaveAs()
 {//另存为文件
@@ -326,7 +303,7 @@ void MainWindow::Findsome()
 
 void MainWindow::on_actionAbout_triggered()
 {//关于
-    QMessageBox::information(this,tr("About"),tr("Powered by XQQY Meow～Ver0.5"));
+    QMessageBox::information(this,tr("About"),tr("Powered by XQQY Meow～Ver0.6"));
 }
 
 void MainWindow::on_actionWC_triggered()
@@ -354,8 +331,34 @@ void MainWindow::on_actionExit_triggered()
     close();
 }
 
+//当用户拖动文件到窗口部件上时候，就会触发dragEnterEvent事件
+void MainWindow::dragEnterEvent(QDragEnterEvent *event)
+{
+    qDebug()<<event->mimeData()->formats()<<"size"<<event->mimeData()->formats().size();
+    if (event->mimeData()->hasFormat("text/plain"))
+        event->acceptProposedAction();
+}
+
+//当用户放下这个文件后，就会触发dropEvent事件
+void MainWindow::dropEvent(QDropEvent *event)
+{
+    qDebug()<<"drop file:"<<event->mimeData()->urls();
+    if(event->mimeData()->urls().size()>1)
+        QMessageBox::warning(this, tr("File Drops"),tr("Droping more than 1 file is not allowed"));
+    else{
+        if (isModified()) {
+            QMessageBox::StandardButton button = QMessageBox::question(this, windowTitle(),
+                                 tr("You have unsaved changes. Do you want to open a new document anyway?"));
+            if (button != QMessageBox::Yes)
+                return;
+        }
+        openFile(event->mimeData()->urls()[0].toLocalFile());
+    }
+}
+
+
 void MainWindow::on_actionHow_triggered()
-{//如何？
+{//如何使用——打开初始文件
     if (isModified()) {
         QMessageBox::StandardButton button = QMessageBox::question(this, windowTitle(),
                              tr("You have unsaved changes. Do you want to open a help document anyway?"));
@@ -377,7 +380,13 @@ void MainWindow::on_editor_textChanged()
         this->setWindowTitle(this->windowTitle()+"*");
 }
 
-void MainWindow::on_actionUTF_8_triggered()
+void MainWindow::on_actionCodecAuto_triggered()
+{
+    m_codec=m_codec->codecForName("UTF-8");
+    openFile(m_filePath,false);
+}
+
+void MainWindow::on_actionReadUTF_8_triggered()
 {//使用UTF-8编码
     if (isModified()) {
         QMessageBox::StandardButton button = QMessageBox::question(this, windowTitle(),
@@ -390,7 +399,7 @@ void MainWindow::on_actionUTF_8_triggered()
 
 }
 
-void MainWindow::on_actionGBK_triggered()
+void MainWindow::on_actionReadGBK_triggered()
 {//使用GBK编码
     if (isModified()) {
         QMessageBox::StandardButton button = QMessageBox::question(this, windowTitle(),
@@ -402,9 +411,8 @@ void MainWindow::on_actionGBK_triggered()
     openFile(m_filePath,true);
 }
 
-void MainWindow::on_actionCodecOthers_triggered()
-{
-    //使用其他编码
+void MainWindow::on_actionReadOthers_triggered()
+{//使用其他编码
     if (isModified()) {
         QMessageBox::StandardButton button = QMessageBox::question(this, windowTitle(),
                              tr("You have unsaved changes. Do you want to open a help document anyway?"));
@@ -417,10 +425,35 @@ void MainWindow::on_actionCodecOthers_triggered()
             m_codec=m_codec->codecForName(codec.toUtf8());
             openFile(m_filePath,true);
         }
+
 }
 
-void MainWindow::on_actionCodecAuto_triggered()
-{
+void MainWindow::on_actionSaveUTF_8_triggered()
+{//使用UTF-8保存
     m_codec=m_codec->codecForName("UTF-8");
-    openFile(m_filePath,false);
+    onFileSave();
+}
+
+void MainWindow::on_actionSaveGBK_triggered()
+{
+    m_codec=m_codec->codecForName("GB18030");
+    onFileSave();
+}
+
+void MainWindow::on_actionSaveOther_triggered()
+{
+    bool isOK;
+    QString codec=QInputDialog::getText(NULL, tr("Codec"),tr("Enter a Codec name"),QLineEdit::Normal,search,&isOK);
+    if(isOK){
+        m_codec=m_codec->codecForName(codec.toUtf8());
+        onFileSave();
+    }
+}
+
+void MainWindow::on_editor_cursorPositionChanged()
+{//更改行号
+    QString line,column;
+    line=QString("%1").arg(ui->editor->textCursor().block().layout()->lineForTextPosition(ui->editor->textCursor().positionInBlock()).lineNumber()+ui->editor->textCursor().block().firstLineNumber());
+    column=QString("%1").arg(ui->editor->textCursor().positionInBlock());
+    ui->statusBar->showMessage(tr("line:%1 column:%2").arg(line,column));
 }

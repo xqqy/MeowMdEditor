@@ -49,7 +49,7 @@ MyHighLighter::MyHighLighter(QTextDocument *parent)
     //对于引用块,灰色
     QuoteFormat.setFontItalic(true);
     QuoteFormat.setForeground(Qt::gray);
-    rule.pattern = QRegExp("(&gt;|\\>)(.*)");
+    rule.pattern = QRegExp("^(&gt;|\\>)(.*)");
     rule.format = QuoteFormat;
     highlightingRules.append(rule);
 
@@ -77,14 +77,12 @@ MyHighLighter::MyHighLighter(QTextDocument *parent)
 
     //对于粗体
     TitleFormat.setFontWeight(QFont::Bold);
-    rule.pattern = QRegExp("\\*\\*\\S+\\*\\*");
+    rule.pattern = QRegExp("\\*\\*.+\\*\\*");
     rule.format = TitleFormat;
     highlightingRules.append(rule);
 
     //对于多行的标红，在highlightblock那块
     multiLineCommentFormat.setForeground(Qt::red);
-    commentStartExpression = QRegExp("/\\*");
-    commentEndExpression = QRegExp("\\*空格/");
 }
 
 void MyHighLighter::highlightBlock(const QString &text)
@@ -101,25 +99,37 @@ void MyHighLighter::highlightBlock(const QString &text)
     }
 
 
-    //对于多行的标红
-    setCurrentBlockState(0);
+    //对于多行的标红,666代表从该行红
+    if(text!="```"){
+        if(previousBlockState()==666){//上一块是红的，就跟着红
+            setFormat(0, text.length(), multiLineCommentFormat);
+            setCurrentBlockState(666);
+        }else{
+            setCurrentBlockState(0);
+        }
+    }else{
+        setFormat(0, text.length(), multiLineCommentFormat);
+        if(previousBlockState()==666)//上一块是红的，注释结束，否则就是开始
+            setCurrentBlockState(0);
+        else
+            setCurrentBlockState(666);
 
-    int startIndex = 0;
-    if (previousBlockState() != 1)
-        startIndex = commentStartExpression.indexIn(text);//如果之前的语句没被标记过，找到第一个符合条件的多行注释语句并开始标红
+    }
 
 
-    while (startIndex >= 0) {//找到所有开始标识符
-        int endIndex = commentEndExpression.indexIn(text, startIndex);
+    /*while (startIndex >= 0) {//找到所有开始标识符
+        int endIndex = commentEndExpression.indexIn(text, startIndex+1);
         int commentLength;
         if (endIndex == -1) {//终止标识符
             setCurrentBlockState(1);//表示这行搞定了
             commentLength = text.length() - startIndex;//从头红到尾
+            startIndex = -1;
+
         } else {
             commentLength = endIndex - startIndex
                     + commentEndExpression.matchedLength();//到终止标识符
+            startIndex = commentStartExpression.indexIn(text, endIndex+1);//继续找下一个有开始标识符的位置
         }
         setFormat(startIndex, commentLength, multiLineCommentFormat);//设为红色
-        startIndex = commentStartExpression.indexIn(text, startIndex + commentLength);//继续找下一个有开始标识符的位置
-    }
+    }*/
 }

@@ -21,8 +21,6 @@ private:
     };
     QVector<HighlightingRule> highlightingRules;
 
-    QRegExp commentStartExpression;//多行注释用开始标识符
-    QRegExp commentEndExpression;//多行注释用结束标识符
 
     QTextCharFormat HTMLFormat;//HTML关键字
     QTextCharFormat TitleFormat;//#标题

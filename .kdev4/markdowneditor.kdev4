@@ -1,0 +1,39 @@
+[Buildset]
+BuildItems=@Variant(\x00\x00\x00\t\x00\x00\x00\x00\x01\x00\x00\x00\x0b\x00\x00\x00\x00\x01\x00\x00\x00\x1c\x00m\x00a\x00r\x00k\x00d\x00o\x00w\x00n\x00e\x00d\x00i\x00t\x00o\x00r)
+
+[Launch]
+Launch Configurations=Launch Configuration 0
+
+[Launch][Launch Configuration 0]
+Configured Launch Modes=execute
+Configured Launchers=nativeAppLauncher
+Name=New Compiled Binary Launcher
+Type=Native Application
+
+[Launch][Launch Configuration 0][Data]
+Arguments=
+Dependencies=@Variant(\x00\x00\x00\t\x00\x00\x00\x00\x00)
+Dependency Action=Nothing
+EnvironmentGroup=
+Executable=file:///home/xqqy/文档/编程/markdowneditor/build/deployment/markdowneditor
+External Terminal=konsole --noclose --workdir %workdir -e %exe
+Project Target=markdowneditor,markdowneditor
+Use External Terminal=false
+Working Directory=
+isExecutable=true
+
+[Project]
+VersionControlSupport=kdevgit
+
+[QMake_Builder]
+Build_Folder=/home/xqqy/文档/编程/markdowneditor/build
+Build_Type=0
+Extra_Arguments=
+Install_Prefix=
+QMake_Binary=/home/xqqy/.qt/5.14.1/gcc_64/bin/qmake
+
+[QMake_Builder][/home/xqqy/文档/编程/markdowneditor/build]
+Build_Type=0
+Extra_Arguments=
+Install_Prefix=
+QMake_Binary=/home/xqqy/.qt/5.14.1/gcc_64/bin/qmake

@@ -57,6 +57,7 @@
 #include <QMainWindow>
 #include <QString>
 #include<QTextCodec>
+#include<QLabel>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -92,11 +93,18 @@ private slots:
     void on_actionExit_triggered();
     void on_actionHow_triggered();
     void on_editor_textChanged();
-    void on_actionUTF_8_triggered();
-    void on_actionGBK_triggered();
-    void on_actionCodecOthers_triggered();
-
     void on_actionCodecAuto_triggered();
+    void on_actionReadUTF_8_triggered();
+    void on_actionReadGBK_triggered();
+    void on_actionReadOthers_triggered();
+
+    void on_actionSaveUTF_8_triggered();
+
+    void on_actionSaveGBK_triggered();
+
+    void on_actionSaveOther_triggered();
+
+    void on_editor_cursorPositionChanged();
 
 private:
     bool isModified() const;
@@ -111,6 +119,7 @@ private:
     QString m_filePath;
     Document m_content;
     QString search="";
+    QLabel l_codec;
 };
 
 #endif // MAINWINDOW_H
