@@ -272,7 +272,7 @@
     </message>
     <message>
         <location filename="mainwindow.cpp" line="214"/>
-        <location filename="mainwindow.cpp" line="351"/>
+        <location filename="mainwindow.cpp" line="353"/>
         <source>You have unsaved changes. Do you want to open a new document anyway?</source>
         <translation>你还有未保存的更改，确认打开文件吗？</translation>
     </message>
@@ -282,23 +282,28 @@
         <translation>打开文件</translation>
     </message>
     <message>
+        <location filename="mainwindow.cpp" line="306"/>
+        <source>Powered by XQQY Meow～Ver0.7</source>
+        <translation type="unfinished">由XQQY小喵喵开发喵～Ver0.7</translation>
+    </message>
+    <message>
         <source>Powered by XQQY Meow～Ver0.5</source>
         <translation type="vanished">由XQQY小喵喵开发喵～Ver0.5</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="423"/>
-        <location filename="mainwindow.cpp" line="446"/>
+        <location filename="mainwindow.cpp" line="425"/>
+        <location filename="mainwindow.cpp" line="448"/>
         <source>Codec</source>
         <translation>编码</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="423"/>
-        <location filename="mainwindow.cpp" line="446"/>
+        <location filename="mainwindow.cpp" line="425"/>
+        <location filename="mainwindow.cpp" line="448"/>
         <source>Enter a Codec name</source>
         <translation>输入一个编码名称</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="458"/>
+        <location filename="mainwindow.cpp" line="460"/>
         <source>line:%1 column:%2</source>
         <translation>行%1 列%2</translation>
     </message>
@@ -334,10 +339,10 @@
         <translation>总共有%1个字</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="364"/>
-        <location filename="mainwindow.cpp" line="393"/>
-        <location filename="mainwindow.cpp" line="406"/>
-        <location filename="mainwindow.cpp" line="418"/>
+        <location filename="mainwindow.cpp" line="366"/>
+        <location filename="mainwindow.cpp" line="395"/>
+        <location filename="mainwindow.cpp" line="408"/>
+        <location filename="mainwindow.cpp" line="420"/>
         <source>You have unsaved changes. Do you want to open a help document anyway?</source>
         <translation>你还有未保存的更改，确认帮助文件吗？</translation>
     </message>
@@ -355,17 +360,16 @@
         <translation>无法写入文件 %1：%2</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="306"/>
         <source>Powered by XQQY Meow～Ver0.6</source>
-        <translation>由XQQY小喵喵开发喵～Ver0.6</translation>
+        <translation type="vanished">由XQQY小喵喵开发喵～Ver0.6</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="347"/>
+        <location filename="mainwindow.cpp" line="349"/>
         <source>File Drops</source>
         <translation>文件拖放</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="347"/>
+        <location filename="mainwindow.cpp" line="349"/>
         <source>Droping more than 1 file is not allowed</source>
         <translation>不能拖放超过一个文件</translation>
     </message>

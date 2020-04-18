@@ -1,4 +1,4 @@
-#ifndef MYHIGHLIGHTER_H
+﻿#ifndef MYHIGHLIGHTER_H
 #define MYHIGHLIGHTER_H
 #include <QSyntaxHighlighter>
 #include <QTextCharFormat>

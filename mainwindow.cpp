@@ -303,7 +303,7 @@ void MainWindow::Findsome()
 
 void MainWindow::on_actionAbout_triggered()
 {//关于
-    QMessageBox::information(this,tr("About"),tr("Powered by XQQY Meow～Ver0.6"));
+    QMessageBox::information(this,tr("About"),tr("Powered by XQQY Meow～Ver0.7"));
 }
 
 void MainWindow::on_actionWC_triggered()
@@ -335,7 +335,9 @@ void MainWindow::on_actionExit_triggered()
 void MainWindow::dragEnterEvent(QDragEnterEvent *event)
 {
     qDebug()<<event->mimeData()->formats()<<"size"<<event->mimeData()->formats().size();
+    #ifndef Q_OS_WIN32
     if (event->mimeData()->hasFormat("text/plain"))
+    #endif
         event->acceptProposedAction();
 }
 
