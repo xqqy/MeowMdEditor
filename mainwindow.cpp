@@ -335,7 +335,9 @@ void MainWindow::on_actionExit_triggered()
 void MainWindow::dragEnterEvent(QDragEnterEvent *event)
 {
     qDebug()<<event->mimeData()->formats()<<"size"<<event->mimeData()->formats().size();
+    #ifndef Q_OS_WIN32
     if (event->mimeData()->hasFormat("text/plain"))
+    #endif
         event->acceptProposedAction();
 }
 

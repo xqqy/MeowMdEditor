@@ -51,6 +51,10 @@
 #include "document.h"
 #include "mainwindow.h"
 
+#if defined(_MSC_VER) && (_MSC_VER >= 1900)
+# pragma execution_character_set("utf-8")
+#endif
+
 #include <QApplication>
 #include <QFile>
 #include<QTranslator>
@@ -78,7 +82,7 @@ int main(int argc, char *argv[])
     }
     MainWindow *window;
     if(argc>1)
-        window = new MainWindow(nullptr,argv[1]);
+        window = new MainWindow(nullptr,QString::fromLocal8Bit(argv[1]));
     else
         window = new MainWindow();
 
