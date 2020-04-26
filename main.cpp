@@ -48,7 +48,6 @@
 **
 ****************************************************************************/
 
-#include "document.h"
 #include "mainwindow.h"
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1900)

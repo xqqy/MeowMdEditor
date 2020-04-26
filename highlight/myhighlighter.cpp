@@ -46,12 +46,6 @@ MyHighLighter::MyHighLighter(QTextDocument *parent)
     rule.format = LinkFormat;
     highlightingRules.append(rule);
 
-    //对于引用块,灰色
-    QuoteFormat.setFontItalic(true);
-    QuoteFormat.setForeground(Qt::gray);
-    rule.pattern = QRegExp("^(&gt;|\\>)(.*)");
-    rule.format = QuoteFormat;
-    highlightingRules.append(rule);
 
 
 
@@ -80,6 +74,14 @@ MyHighLighter::MyHighLighter(QTextDocument *parent)
     rule.pattern = QRegExp("\\*\\*.+\\*\\*");
     rule.format = TitleFormat;
     highlightingRules.append(rule);
+
+    //对于引用块,灰色
+    QuoteFormat.setFontItalic(true);
+    QuoteFormat.setForeground(Qt::gray);
+    rule.pattern = QRegExp("^(&gt;|\\>)(.*)");
+    rule.format = QuoteFormat;
+    highlightingRules.append(rule);
+
 
     //对于多行的标红，在highlightblock那块
     multiLineCommentFormat.setForeground(Qt::red);

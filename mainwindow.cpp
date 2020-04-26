@@ -49,7 +49,6 @@
 ****************************************************************************/
 
 #include "mainwindow.h"
-#include "previewpage.h"
 #include "ui_mainwindow.h"
 #include"highlight/myhighlighter.h"
 
@@ -58,13 +57,13 @@
 #include <QFontDatabase>
 #include <QMessageBox>
 #include <QTextStream>
-#include <QWebChannel>
 #include<QFontDialog>
 #include<QFont>
 #include<QtDebug>
 #include <QCloseEvent>
 #include<QInputDialog>
 #include<QMimeData>
+#include<QtPrintSupport/QPrinter>
 
 
 
@@ -74,29 +73,21 @@ MainWindow::MainWindow(QWidget *parent,const QString &path) :
 {
     ui->setupUi(this);
     this->setWindowIcon(QIcon(":/3rdparty/breeze-icon/default.png"));
-    //编辑器用系统字体，禁止webview的菜单
+    //编辑器用系统字体
     ui->editor->setFont(QFontDatabase::systemFont(QFontDatabase::FixedFont));
-    ui->preview->setContextMenuPolicy(Qt::NoContextMenu);
     //允许拖放
     setAcceptDrops(true);
     //喵高亮系统
     MyHighLighter *high = new MyHighLighter(ui->editor->document());
 
 
-    //webengine的页面
-    PreviewPage *page = new PreviewPage(this);
-    ui->preview->setPage(page);
+
+
 
     //如果接收到改变内容的信号，就把新内容发送给m_content，一个继承自Qobject的document类
-    connect(ui->editor, &QPlainTextEdit::textChanged,
-            [this]() { m_content.setText(ui->editor->toPlainText()); });
+    //connect(ui->editor, &QPlainTextEdit::textChanged,this,SLOT());
 
-    QWebChannel *channel = new QWebChannel(this);
-    channel->registerObject(QStringLiteral("content"), &m_content);
-    page->setWebChannel(channel);
 
-    //使用Index.html
-    ui->preview->setUrl(QUrl("qrc:/index.html"));
 
     //文件菜单
     connect(ui->actionNew, &QAction::triggered, this, &MainWindow::onFileNew);
@@ -254,7 +245,7 @@ void MainWindow::onFileSave()
 void MainWindow::onFileSaveAs()
 {//另存为文件
     QString path = QFileDialog::getSaveFileName(this,
-        tr("Save MarkDown File"), "", tr("MarkDown File (*.md *.markdown)"));
+        tr("Save MarkDown File"), "", tr("MarkDown File ( *.md )"));
     if (path.isEmpty())
         return;
     m_filePath = path;
@@ -293,10 +284,10 @@ void MainWindow::Findsome()
                 QMessageBox::warning(this, tr("Search"),
                             tr("Can not found %1").arg(search));
             }else{
-                ui->preview->findText(search);
+                ui->textBrowser->find(search);
             }
         }else{
-            ui->preview->findText(search);
+            ui->textBrowser->find(search);
         }
     }
 }
@@ -313,12 +304,12 @@ void MainWindow::on_actionWC_triggered()
 
 void MainWindow::on_editor_selectionChanged()
 {//当更改选区时，结束对webview的搜索
-    ui->preview->findText("");
+    ui->textBrowser->find("");
 }
 
 void MainWindow::on_actionPreview_toggled(bool arg1)
 {//打开预览
-    ui->preview->setHidden(!arg1);
+    ui->textBrowser->setHidden(!arg1);
 }
 
 void MainWindow::on_actionView_mode_toggled(bool arg1)
@@ -377,9 +368,10 @@ void MainWindow::on_actionHow_triggered()
 }
 
 void MainWindow::on_editor_textChanged()
-{//给窗口标题加个*
+{//给窗口标题加个*+更改内容
     if(!this->windowTitle().endsWith("*"))
         this->setWindowTitle(this->windowTitle()+"*");
+    ui->textBrowser->setMarkdown(ui->editor->toPlainText());
 }
 
 void MainWindow::on_actionCodecAuto_triggered()

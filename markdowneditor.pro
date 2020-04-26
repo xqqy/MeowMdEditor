@@ -1,22 +1,20 @@
 TEMPLATE = app
 
-QT += webenginewidgets webchannel
+QT       += core gui
+
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 # No need of qml
 QT -= positioning qml
 
 HEADERS += \
     highlight/myhighlighter.h \
-    mainwindow.h \
-    previewpage.h \
-    document.h
+    mainwindow.h
 
 SOURCES = \
     highlight/myhighlighter.cpp \
     main.cpp \
-    mainwindow.cpp \
-    previewpage.cpp \
-    document.cpp
+    mainwindow.cpp
 
 RESOURCES = \
     resources/markdowneditor.qrc

@@ -51,7 +51,6 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "document.h"
 
 
 #include <QMainWindow>
@@ -117,7 +116,6 @@ private:
     Ui::MainWindow *ui;
     QTextCodec *m_codec=QTextCodec::codecForName("UTF-8");
     QString m_filePath;
-    Document m_content;
     QString search="";
     QLabel l_codec;
 };
