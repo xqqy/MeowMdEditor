@@ -38,7 +38,7 @@ TRANSLATIONS = app.zh_CN.ts
 TRANSLATIONS += app.en_US.ts
 
 
-DESTDIR     = deployment
+#DESTDIR     = deployment
 
 RC_ICONS = logo.ico
 
