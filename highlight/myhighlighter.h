@@ -30,5 +30,6 @@ private:
     QTextCharFormat ListFormat;//有序列表无序列表
     QTextCharFormat multiLineCommentFormat;//多行注释
     QTextCharFormat ItalicFormat;//方法标识符
+    QTextCharFormat LinWarning;//来自空格大师琳的排版警告
 };
 #endif // MYHIGHLIGHTER_H

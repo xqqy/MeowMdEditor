@@ -82,6 +82,21 @@ MyHighLighter::MyHighLighter(QTextDocument *parent)
     rule.format = QuoteFormat;
     highlightingRules.append(rule);
 
+    //来自空格大师琳的排版警告，蓝色
+    LinWarning.setForeground(QColor("#1ea6e6"));
+    LinWarning.setFontItalic(false);
+    rule.format = LinWarning;
+    rule.pattern = QRegExp("[\u4e00-\u9fa5][a-z,A-Z]");//汉字与英文之间需要空格
+    highlightingRules.append(rule);
+    rule.pattern = QRegExp("[a-z,A-Z][\u4e00-\u9fa5]");//汉字与英文之间需要空格
+    highlightingRules.append(rule);
+    rule.pattern = QRegExp("([\u4e00-\u9fa5]|[a-z])[0-9]");//数字不与字符相连
+    highlightingRules.append(rule);
+    rule.pattern = QRegExp("[0-9](?![年月日])([\u4e00-\u9fa5])");//数字不与字符相连，除非是年月日
+    highlightingRules.append(rule);
+    rule.pattern = QRegExp("[，。；！？、]\\s");//全角标点无空格
+    highlightingRules.append(rule);
+
 
     //对于多行的标红，在highlightblock那块
     multiLineCommentFormat.setForeground(Qt::red);
