@@ -105,6 +105,10 @@ private slots:
 
     void on_editor_cursorPositionChanged();
 
+    void on_actionSave_as_HTML_triggered();
+
+    void on_actionShowHTML_triggered();
+
 private:
     bool isModified() const;
     //重写的一些event

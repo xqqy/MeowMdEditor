@@ -51,6 +51,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include"highlight/myhighlighter.h"
+#include"showhtml.h"
 
 #include <QFile>
 #include <QFileDialog>
@@ -294,7 +295,7 @@ void MainWindow::Findsome()
 
 void MainWindow::on_actionAbout_triggered()
 {//关于
-    QMessageBox::information(this,tr("About"),tr("Powered by XQQY Meow～Ver0.7"));
+    QMessageBox::information(this,tr("About"),tr("Powered by XQQY Meow～Ver0.9"));
 }
 
 void MainWindow::on_actionWC_triggered()
@@ -450,4 +451,10 @@ void MainWindow::on_editor_cursorPositionChanged()
     line=QString("%1").arg(ui->editor->textCursor().block().layout()->lineForTextPosition(ui->editor->textCursor().positionInBlock()).lineNumber()+ui->editor->textCursor().block().firstLineNumber());
     column=QString("%1").arg(ui->editor->textCursor().positionInBlock());
     ui->statusBar->showMessage(tr("line:%1 column:%2").arg(line,column));
+}
+
+void MainWindow::on_actionShowHTML_triggered()
+{
+    ShowHtml sh(this,ui->editor->toPlainText());
+    sh.exec();
 }

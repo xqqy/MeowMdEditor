@@ -14,5 +14,6 @@
         <file>3rdparty/breeze-icon/gtk-select-font.png</file>
         <file>3rdparty/breeze-icon/help-about.png</file>
         <file>3rdparty/breeze-icon/default.png</file>
+        <file>3rdparty/breeze-icon/dialog-xml-editor.png</file>
     </qresource>
 </RCC>

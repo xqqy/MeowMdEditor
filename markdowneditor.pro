@@ -9,12 +9,14 @@ QT -= positioning qml
 
 HEADERS += \
     highlight/myhighlighter.h \
-    mainwindow.h
+    mainwindow.h \
+    showhtml.h
 
 SOURCES = \
     highlight/myhighlighter.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    showhtml.cpp
 
 RESOURCES = \
     resources/markdowneditor.qrc
@@ -24,7 +26,8 @@ RESOURCES = \
 CONFIG -= qtquickcompiler
 
 FORMS += \
-    mainwindow.ui
+    mainwindow.ui \
+    showhtml.ui
 
 DISTFILES += \
     resources/3rdparty/MARKDOWN-LICENSE.txt \
