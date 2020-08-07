@@ -9,14 +9,16 @@ HEADERS += \
     highlight/myhighlighter.h \
     mainwindow.h \
     previewpage.h \
-    document.h
+    document.h \
+    showhtml.h
 
 SOURCES = \
     highlight/myhighlighter.cpp \
     main.cpp \
     mainwindow.cpp \
     previewpage.cpp \
-    document.cpp
+    document.cpp \
+    showhtml.cpp
 
 RESOURCES = \
     resources/markdowneditor.qrc
@@ -26,7 +28,8 @@ RESOURCES = \
 CONFIG -= qtquickcompiler
 
 FORMS += \
-    mainwindow.ui
+    mainwindow.ui \
+    showhtml.ui
 
 DISTFILES += \
     resources/3rdparty/MARKDOWN-LICENSE.txt \
